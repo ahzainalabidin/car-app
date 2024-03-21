@@ -1,16 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addCar, changeCost, changeName } from "../store";
+import { createSelector } from "reselect";
 
 function CarForm() {
 
     const dispatch = useDispatch();
 
-    const { name, cost } = useSelector((state) => {
-        return {
-            name: state.form.name,
-            cost: state.form.cost
-        };
-    });
+    const memoizedForm = createSelector(
+        (state) => state.form.name,
+        (state) => state.form.cost,
+        (name, cost) => {
+            return { name, cost };
+        }
+    );
+
+    const { name, cost } = useSelector(memoizedForm);
 
     const handleNameChange = (event) => {
         dispatch(changeName(event.target.value));
