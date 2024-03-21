@@ -5,8 +5,10 @@ function CarList() {
 
     const dispatch = useDispatch();
 
-    const cars = useSelector((state) => {
-        return state.cars.carList;
+    const cars = useSelector(({ cars: { carList, searchTerm } }) => {
+        return carList.filter((car) =>
+            car.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
     });
 
     const handleCarDelete = (car) => {
