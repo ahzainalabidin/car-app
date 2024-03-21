@@ -5,10 +5,17 @@ function CarList() {
 
     const dispatch = useDispatch();
 
-    const cars = useSelector(({ cars: { carList, searchTerm } }) => {
-        return carList.filter((car) =>
+    const { cars, name } = useSelector(({ form, cars: { carList, searchTerm } }) => {
+
+        const filteredCars = carList.filter((car) =>
             car.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
+
+        return {
+            cars: filteredCars,
+            name: form.name
+        };
+
     });
 
     const handleCarDelete = (car) => {
@@ -16,8 +23,11 @@ function CarList() {
     };
 
     const renderedCars = cars.map((car) => {
+
+        const bold = name && car.name.toLowerCase().includes(name.toLowerCase());
+
         return (
-            <div key={car.id} className="panel">
+            <div key={car.id} className={`panel ${bold && 'bold'}`}>
 
                 <p>{car.name} - ${car.cost}</p>
 
@@ -30,6 +40,7 @@ function CarList() {
 
             </div>
         );
+
     });
 
     return (
